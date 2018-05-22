@@ -1,0 +1,41 @@
+# Default values for toolbox.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: rubykube/toolbox
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - toolbox.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+
+command: "bin/stress_trading"
+
+params:
+  root_url:                   "http://peatio.trade"
+  api_v2_jwt_key:             "apikey"
+  management_api_v1_jwt_key:  "apikey"
+  currencies:                 "uah,usd,eur"
+  markets:                    "uahusd,uaheur"
+  orders:                     "1000"
+  threads:                    "10"
+  sleep:                      "3600"

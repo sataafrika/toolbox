@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-toolbox-{{ randNumeric 5 }}"
+  labels:
+    app: {{ template "toolbox.fullname" . }}
+    component: toolbox
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app: {{ template "toolbox.fullname" . }}
+        component: toolbox
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: toolbox
+          image: {{ template "toolbox.image" . }}
+          command:
+            - sh
+            - -exc
+            - {{ .Values.command }} {{ template "toolbox.params" . }} && sleep {{ .Values.params.sleep }}
